@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_subdirectory(test)
 
-set(SOURCE_FILES main.cpp IniReader.cpp IniReader.h IniWriter.cpp IniWriter.h)
-add_executable(INIReadWrite ${SOURCE_FILES} IniWriter.cpp IniWriter.h IniReader.cpp IniReader.h)
+set(SOURCE_FILES main.cpp IniFile.cpp IniFile.h)
+add_executable(INIReadWrite ${SOURCE_FILES} IniFile.cpp IniFile.h)
 
 add_library(core ${SOURCE_FILES})
 target_link_libraries(INIReadWrite core)

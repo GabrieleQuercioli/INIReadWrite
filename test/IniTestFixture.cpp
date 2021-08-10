@@ -4,40 +4,56 @@
 
 #include <gtest/gtest.h>
 
-#include "../IniWriter.h"
-#include "../IniReader.h"
+#include "../IniFile.h"
+
 
 class IniFileSuite : public testing::Test {
 
 protected:
     virtual void SetUp() {
-        iw.setIniFileName(".\\Test.ini");
-        ir.setIniFileName(".\\Test.ini");
+        iw.setIniFileName("Test");
+
     }
-    IniWriter iw;
-    IniReader ir;
+    IniFile iw;
+
 };
 
 TEST_F(IniFileSuite, TestSetString)
 {
     iw.writeString("section", "keyS", "value");
-    ASSERT_EQ("value", ir.readString("section", "keyS", "error"));
+    ASSERT_EQ("value", iw.readString("section", "keyS", "error"));
 }
 
 TEST_F(IniFileSuite, TestSetFloat)
 {
     iw.writeFloat("section", "keyF", 1.8);
-    ASSERT_EQ(1.8, ir.readFloat("section", "keyF", 0.2));
+    ASSERT_FLOAT_EQ(1.8, iw.readFloat("section", "keyF", 0.2));
 }
 
 TEST_F(IniFileSuite, TestSetInt)
 {
     iw.writeInteger("section", "keyI", 20);
-    ASSERT_EQ(20, ir.readInteger("section", "key", 10));
+    ASSERT_EQ(20, iw.readInteger("section", "keyI", 10));
 }
 
 TEST_F(IniFileSuite, TestSetBoolean)
 {
     iw.writeBoolean("section", "keyB", false);
-    ASSERT_FALSE(ir.readBoolean("section", "keyB", true));
+    ASSERT_EQ("False",iw.readBoolean("section", "keyB", true));
+}
+
+TEST_F(IniFileSuite, TestRemoveSection)
+{
+    iw.writeString("section", "KeyS", "value");
+    iw.writeInteger("section", "KeyI", 20);
+    iw.removeSection("section");
+    ASSERT_NE("value", iw.readString("section", "KeyS", "default"));
+    ASSERT_NE(20, iw.readInteger("section", "KeyI", 10));
+}
+
+TEST_F(IniFileSuite, TestRemoveKey)
+{
+    iw.writeInteger("section", "KeyI", 20);
+    iw.removeKey("section", "KeyI");
+    ASSERT_NE(20, iw.readInteger("section", "KeyI", 10));
 }

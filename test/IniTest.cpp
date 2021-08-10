@@ -4,31 +4,24 @@
 
 #include <gtest/gtest.h>
 
-#include "../IniWriter.h"
-#include "../IniReader.h"
+#include "../IniFile.h"
+
 
 TEST(IniTest, DefaultConstructor)
 {
-    IniWriter iw;
-    IniReader ir;
-    ASSERT_EQ(".\\Logger.ini", iw.getIniFileName());
-    ASSERT_EQ(".\\Logger.ini", ir.getIniFileName());
+    IniFile iw;
+    ASSERT_EQ(".\\Untitled.ini", iw.getIniFileName());
 }
 
 TEST(IniTest, Constructor)
 {
-    IniWriter iw(".\\Logger.ini");
-    IniReader ir(".\\Logger.ini");
+    IniFile iw("Logger");
     ASSERT_EQ(".\\Logger.ini",iw.getIniFileName());
-    ASSERT_EQ(".\\Logger.ini",ir.getIniFileName());
 }
 
 TEST(IniTest, SetConstructor)
 {
-    IniWriter iw;
-    IniReader ir;
-    iw.setIniFileName(".\\Logger.ini");
-    ir.setIniFileName(".\\Logger.ini");
+    IniFile iw;
+    iw.setIniFileName("Logger");
     ASSERT_EQ(".\\Logger.ini",iw.getIniFileName());
-    ASSERT_EQ(".\\Logger.ini",ir.getIniFileName());
 }
