@@ -12,11 +12,22 @@ class IniFileSuite : public testing::Test {
 protected:
     virtual void SetUp() {
         iw.setIniFileName("Test");
-
+        iw.writeInteger("sec1", "key1", 0);
+        iw.writeString("sec1", "key2", "szValue");
+        iw.writeFloat("sec2", "key3", 1.2);
+        iw.writeBoolean("sec2", "key4", true);
     }
     IniFile iw;
 
 };
+
+TEST_F(IniFileSuite, TestMap)
+{
+    ASSERT_EQ(0, iw.readInteger("sec1", "key1", 10));
+    ASSERT_EQ("szValue", iw.readString("sec1", "key2", "error"));
+    ASSERT_FLOAT_EQ(1.2, iw.readFloat("sec2", "key3", 1.4));
+    ASSERT_EQ("True", iw.readBoolean("sec2", "key4", false));
+}
 
 TEST_F(IniFileSuite, TestSetString)
 {
@@ -47,13 +58,13 @@ TEST_F(IniFileSuite, TestRemoveSection)
     iw.writeString("section", "KeyS", "value");
     iw.writeInteger("section", "KeyI", 20);
     iw.removeSection("section");
-    ASSERT_NE("value", iw.readString("section", "KeyS", "default"));
-    ASSERT_NE(20, iw.readInteger("section", "KeyI", 10));
+    EXPECT_THROW(iw.readString("section", "KeyS", "default"), std::logic_error);
+    EXPECT_THROW(iw.readInteger("section", "KeyI", 10), std::logic_error);
 }
 
 TEST_F(IniFileSuite, TestRemoveKey)
 {
     iw.writeInteger("section", "KeyI", 20);
     iw.removeKey("section", "KeyI");
-    ASSERT_NE(20, iw.readInteger("section", "KeyI", 10));
+    EXPECT_THROW(iw.readInteger("section", "KeyI", 10), std::logic_error);
 }
