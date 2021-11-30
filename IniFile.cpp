@@ -73,7 +73,7 @@ int IniFile::readInteger(std::string szSection, std::string szKey, int iDefaultV
             return intResult;
         }
     }
-    throw std::logic_error("Result doesn't exists anymore");
+    throw std::invalid_argument("Result doesn't exists anymore");
 }
 
 float IniFile::readFloat(std::string szSection, std::string szKey, float fltDefaultValue)
@@ -88,7 +88,7 @@ float IniFile::readFloat(std::string szSection, std::string szKey, float fltDefa
             return fltResult;
         }
     }
-    throw std::logic_error("Result doesn't exists anymore");
+    throw std::invalid_argument("Result doesn't exists anymore");
 }
 
 std::string IniFile::readBoolean(std::string szSection, std::string szKey, bool boolDefaultValue)
@@ -101,7 +101,7 @@ std::string IniFile::readBoolean(std::string szSection, std::string szKey, bool 
         if (strcmp(szResult, it->second.first.c_str()) == 0)
             return it->second.first;
     }
-    throw std::logic_error("Result doesn't exists anymore");
+    throw std::invalid_argument("Result doesn't exists anymore");
 }
 
 std::string IniFile::readString(std::string szSection, std::string szKey, std::string szDefault)
@@ -113,7 +113,7 @@ std::string IniFile::readString(std::string szSection, std::string szKey, std::s
         if (strcmp(szResult, it->second.first.c_str()) == 0)
             return it->second.first;
     }
-    throw std::logic_error("Result doesn't exists anymore");
+    throw std::invalid_argument("Result doesn't exists anymore");
 }
 
 void IniFile::readSection(std::string szSection)
@@ -124,7 +124,7 @@ void IniFile::readSection(std::string szSection)
             find = true;
     }
     if (!find) {
-        throw std::logic_error("Insert an existent Section name");
+        throw std::invalid_argument("Insert an existent Section name");
     }
     else {
         std::vector<std::string> nameValuePairs;

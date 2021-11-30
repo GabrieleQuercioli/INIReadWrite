@@ -26,7 +26,7 @@ int main()
     std::string fileName = iniFile->getIniFileName();
     try {
         iniFile->readSection("boot loader");
-    } catch (std::logic_error &e) {
+    } catch (std::invalid_argument &e) {
         std::cout<<e.what()<<std::endl;
     }
     try{
@@ -42,7 +42,7 @@ int main()
                  <<"Run Execution: "<<fltRunExec<<std::endl
                  <<"No Execution: "<<bNoExec<<std::endl
                 <<"Operating System: "<<szOS<<std::endl;
-    }catch (std::logic_error &e){
+    }catch (std::invalid_argument &e){
         std::cout<<e.what()<<std::endl;
     }
 

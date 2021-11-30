@@ -6,7 +6,6 @@
 #define INIFILE_H
 
 #include "string"
-#include <vector>
 #include <map>
 
 class IniFile
@@ -31,7 +30,6 @@ public:
 
 private:
     std::string m_szFileName;
-    std::vector<std::string> sections;
     std::map<std::string, std::pair<std::string, std::string>> section;
 };
 
