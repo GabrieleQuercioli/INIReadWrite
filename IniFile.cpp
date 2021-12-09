@@ -56,7 +56,7 @@ void IniFile::writeBoolean(std::string szSection, std::string szKey, bool bolVal
 void IniFile::writeString(std::string szSection, std::string szKey, std::string szValue)
 {
     if(szValue.empty() || szKey.empty() || szSection.empty())
-        throw std::logic_error("Invalid argument");  //is right to be an exception?
+        throw std::logic_error("Invalid argument");
     section.emplace(szKey, std::pair<std::string, std::string> (szValue, szSection));
     WritePrivateProfileString(szSection.c_str(),  szKey.c_str(), szValue.c_str(), m_szFileName.c_str());
 }
@@ -98,7 +98,7 @@ std::string IniFile::readBoolean(std::string szSection, std::string szKey, bool 
     GetPrivateProfileString(szSection.c_str(), szKey.c_str(), szDefault.c_str(), szResult, 255, m_szFileName.c_str());
     for (auto it = section.cbegin(); it != section.cend(); ++it)
     {
-        if (strcmp(szResult, it->second.first.c_str()) == 0)
+        if (strcmp(szResult, it->second.first.c_str()) == 0 && strcmp(szKey.c_str(), it->first.c_str()) == 0)
             return it->second.first;
     }
     throw std::invalid_argument("Result doesn't exists anymore");
@@ -141,7 +141,7 @@ void IniFile::readSection(std::string szSection)
             {
                 size_t substrLen = strlen(pSubstr);           //size_t is unsigned int type
                 const char* pos = strchr(pSubstr, '=');
-                if(NULL != pos)
+                if(nullptr != pos)
                 {
                     nameValuePairs.emplace_back(pSubstr);
                 }
@@ -158,6 +158,14 @@ void IniFile::readSection(std::string szSection)
 
 void IniFile::removeSection(std::string szSection)     //while struct because erase(key) but section
 {                                                      //is not a key
+    bool find = false;
+    for(auto it = section.cbegin(); it != section.cend(); ++it){
+        if (strcmp(szSection.c_str(), it->second.second.c_str()) == 0)
+            find = true;
+    }
+    if (!find) {
+        throw std::invalid_argument("Insert an existent Section name");
+    }
     auto it = section.cbegin();
     while (it != section.cend()){
         if(strcmp(szSection.c_str(), it->second.second.c_str()) == 0){
@@ -172,6 +180,14 @@ void IniFile::removeSection(std::string szSection)     //while struct because er
 
 void IniFile::removeKey(std::string szSection,  std::string szKey)
 {
+    bool find = false;
+    for(auto it = section.cbegin(); it != section.cend(); ++it){
+        if (strcmp(szKey.c_str(), it->first.c_str()) == 0)
+            find = true;
+    }
+    if (!find) {
+        throw std::invalid_argument("Insert an existent Section name");
+    }
     section.erase(szKey);
     WritePrivateProfileString(szSection.c_str(),szKey.c_str(),NULL,m_szFileName.c_str());
 }

@@ -18,10 +18,13 @@ int main()
         std::cout<<e.what()<<std::endl;
     }
 
-    //iniFile->removeKey("boot loader","RunExec");
-    //iniFile->removeSection("boot loader");
-    //iniFile->setIniFileName("Init");
-    //iniFile->writeInteger("boot loader", "Timeout", 25);
+    try {
+        //iniFile->removeKey("boot loader","RunExec");
+        //iniFile->removeSection("operating system");
+    } catch (std::invalid_argument &e) {
+        std::cout<<e.what()<<std::endl;
+    }
+
 
     std::string fileName = iniFile->getIniFileName();
     try {
@@ -36,7 +39,7 @@ int main()
         std::string bNoExec = iniFile->readBoolean("operating system", "NoExec", true);
         std::string szOS = iniFile->readString("operating system", "OS", "Windows Vista");
 
-        std::cout<<"File Name: "<<fileName<<std::endl
+        std::cout<<"\nFile Name: "<<fileName<<std::endl
                  <<"Default OS: "<<szDefault<<std::endl
                  <<"Timeout: "<<iTimeout<<std::endl
                  <<"Run Execution: "<<fltRunExec<<std::endl

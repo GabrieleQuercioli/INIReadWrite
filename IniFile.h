@@ -31,6 +31,7 @@ public:
 private:
     std::string m_szFileName;
     std::map<std::string, std::pair<std::string, std::string>> section;
+    //key=szKey and value=pair(szValue,szSection)
 };
 
 #endif //INIFILE_H

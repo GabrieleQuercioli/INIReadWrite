@@ -62,6 +62,12 @@ TEST_F(IniFileSuite, TestRemoveSection)
     EXPECT_THROW(iw.readInteger("section", "KeyI", 10), std::invalid_argument);
 }
 
+TEST_F(IniFileSuite, TestExceptionRemove)
+{
+    EXPECT_THROW(iw.removeKey("sec1", "key5"), std::invalid_argument);
+    EXPECT_THROW(iw.removeSection("sec3"), std::invalid_argument);
+}
+
 TEST_F(IniFileSuite, TestRemoveKey)
 {
     iw.writeInteger("section", "KeyI", 20);
@@ -74,4 +80,12 @@ TEST_F(IniFileSuite, TestExceptionRead)
     iw.writeString("section1", "key1", "szValue");
     EXPECT_THROW(iw.readString("section2", "key1", "szDefault"), std::invalid_argument);
     EXPECT_THROW(iw.readString("section1", "key2", "szDefault"), std::invalid_argument);
+    EXPECT_THROW(iw.readInteger("section2", "key1", 20), std::invalid_argument);
+    EXPECT_THROW(iw.readFloat("section1", "key2", 0.2), std::invalid_argument);
+    EXPECT_THROW(iw.readBoolean("section2", "key1", true), std::invalid_argument);
+}
+
+TEST_F(IniFileSuite, TestExceptionReadSection)
+{
+    EXPECT_THROW(iw.readSection("section3"), std::invalid_argument);
 }
