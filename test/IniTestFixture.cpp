@@ -13,7 +13,7 @@ protected:
     virtual void SetUp() {
         iw.setIniFileName("Test");
         iw.writeInteger("sec1", "key1", 0);
-        iw.writeString("sec1", "key2", "szValue");
+        iw.writeString("sec1", "key2", "value");
         iw.writeFloat("sec2", "key3", 1.2);
         iw.writeBoolean("sec2", "key4", true);
     }
@@ -24,7 +24,7 @@ protected:
 TEST_F(IniFileSuite, TestMap)
 {
     ASSERT_EQ(0, iw.readInteger("sec1", "key1", 10));
-    ASSERT_EQ("szValue", iw.readString("sec1", "key2", "error"));
+    ASSERT_EQ("value", iw.readString("sec1", "key2", "error"));
     ASSERT_FLOAT_EQ(1.2, iw.readFloat("sec2", "key3", 1.4));
     ASSERT_EQ("True", iw.readBoolean("sec2", "key4", false));
 }
@@ -77,9 +77,9 @@ TEST_F(IniFileSuite, TestRemoveKey)
 
 TEST_F(IniFileSuite, TestExceptionRead)
 {
-    iw.writeString("section1", "key1", "szValue");
-    EXPECT_THROW(iw.readString("section2", "key1", "szDefault"), std::invalid_argument);
-    EXPECT_THROW(iw.readString("section1", "key2", "szDefault"), std::invalid_argument);
+    iw.writeString("section1", "key1", "value");
+    EXPECT_THROW(iw.readString("section2", "key1", "defaultValue"), std::invalid_argument);
+    EXPECT_THROW(iw.readString("section1", "key2", "defaultValue"), std::invalid_argument);
     EXPECT_THROW(iw.readInteger("section2", "key1", 20), std::invalid_argument);
     EXPECT_THROW(iw.readFloat("section1", "key2", 0.2), std::invalid_argument);
     EXPECT_THROW(iw.readBoolean("section2", "key1", true), std::invalid_argument);

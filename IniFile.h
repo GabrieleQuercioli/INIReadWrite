@@ -12,26 +12,26 @@ class IniFile
 {
 public:
     IniFile();
-    explicit IniFile(std::string m_szFileName);
-    void setIniFileName(std::string szName);
+    explicit IniFile(std::string fileName);
+    void setIniFileName(std::string name);
     std::string getIniFileName();
-    void writeInteger(std::string szSection, std::string szKey, int iValue);
-    void writeFloat(std::string szSection, std::string szKey, float fltValue);
-    void writeBoolean(std::string szSection, std::string szKey, bool bolValue);
-    void writeString(std::string szSection, std::string szKey, std::string szValue);
-    int readInteger(std::string szSection, std::string szKey, int iDefaultValue);
-    float readFloat(std::string szSection, std::string szKey, float fltDefaultValue);
-    std::string readBoolean(std::string szSection, std::string szKey, bool bolDefaultValue);
-    std::string readString(std::string szSection, std::string szKey, std::string szString);
-    void readSection(std::string szSection);
-    void removeSection(std::string szSection);
-    void removeKey(std::string szSection, std::string szKey);
+    void writeInteger(std::string sectionName, std::string key, int iValue);
+    void writeFloat(std::string sectionName, std::string key, float fltValue);
+    void writeBoolean(std::string sectionName, std::string key, bool bolValue);
+    void writeString(std::string sectionName, std::string key, std::string value);
+    int readInteger(std::string sectionName, std::string key, int iDefaultValue);
+    float readFloat(std::string sectionName, std::string key, float fltDefaultValue);
+    std::string readBoolean(std::string sectionName, std::string key, bool bolDefaultValue);
+    std::string readString(std::string sectionName, std::string key, std::string defaultValue);
+    void readSection(std::string sectionName);
+    void removeSection(std::string sectionName);
+    void removeKey(std::string sectionName, std::string key);
     void printMapElements();
 
 private:
-    std::string m_szFileName;
+    std::string fileName;
     std::map<std::string, std::pair<std::string, std::string>> section;
-    //key=szKey and value=pair(szValue,szSection)
+    //key=key and value=pair(szValue,sectionName)
 };
 
 #endif //INIFILE_H
