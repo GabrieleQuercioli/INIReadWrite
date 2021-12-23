@@ -75,7 +75,7 @@ TEST_F(IniFileSuite, TestRemoveKey)
     EXPECT_THROW(iw.readInteger("section", "KeyI", 10), std::invalid_argument);
 }
 
-TEST_F(IniFileSuite, TestExceptionRead)
+TEST_F(IniFileSuite, TestExceptionInvalidRead)
 {
     iw.writeString("section1", "key1", "value");
     EXPECT_THROW(iw.readString("section2", "key1", "defaultValue"), std::invalid_argument);
@@ -85,7 +85,32 @@ TEST_F(IniFileSuite, TestExceptionRead)
     EXPECT_THROW(iw.readBoolean("section2", "key1", true), std::invalid_argument);
 }
 
-TEST_F(IniFileSuite, TestExceptionReadSection)
+TEST_F(IniFileSuite, TestExceptionInvalidReadSection)
 {
     EXPECT_THROW(iw.readSection("section3"), std::invalid_argument);
+}
+
+TEST_F(IniFileSuite, TestExceptionNullPointerWrite)
+{
+    EXPECT_THROW(iw.writeString("section", "key", nullptr), std::logic_error);
+}
+
+TEST_F(IniFileSuite, TestExceptionNullPointerRemoveKey)
+{
+    EXPECT_THROW(iw.removeKey("section", nullptr), std::logic_error);
+}
+
+TEST_F(IniFileSuite, TestExceptionNullPointerRemoveSection)
+{
+    EXPECT_THROW(iw.removeSection(nullptr), std::logic_error);
+}
+
+TEST_F(IniFileSuite, TestExceptionNullPointerReadSection)
+{
+    EXPECT_THROW(iw.readSection(nullptr), std::logic_error);
+}
+
+TEST_F(IniFileSuite, TestExceptionNullPointerRead)
+{
+    EXPECT_THROW(iw.readString("section", "key", nullptr), std::logic_error);
 }

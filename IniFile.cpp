@@ -13,12 +13,12 @@ IniFile::IniFile()
     fileName = ".\\Untitled.ini";
 }
 
-IniFile::IniFile(std::string name)
+IniFile::IniFile(const std::string& name)
 {
     fileName = ".\\"+name+".ini";
 }
 
-void IniFile::setIniFileName(std::string name)
+void IniFile::setIniFileName(const std::string& name)
 {
     if(strcmp(fileName.c_str(),name.c_str()) != 0) {
         std::string newName = name+".ini";
@@ -32,36 +32,36 @@ std::string IniFile::getIniFileName()
     return fileName;
 }
 
-void IniFile::writeInteger(std::string sectionName, std::string key, int iValue)
+void IniFile::writeInteger(const std::string& sectionName, const std::string& key, int iValue)
 {
     std::string value = std::to_string(iValue);
     section.emplace(key, std::pair<std::string, std::string> (value, sectionName));
     WritePrivateProfileString(sectionName.c_str(), key.c_str(), value.c_str(), fileName.c_str());
 }
 
-void IniFile::writeFloat(std::string sectionName, std::string key, float fltValue)
+void IniFile::writeFloat(const std::string& sectionName, const std::string& key, float fltValue)
 {
     std::string value = std::to_string(fltValue);
     section.emplace(key, std::pair<std::string, std::string> (value, sectionName));
     WritePrivateProfileString(sectionName.c_str(),  key.c_str(), value.c_str(), fileName.c_str());
 }
 
-void IniFile::writeBoolean(std::string sectionName, std::string key, bool bolValue)
+void IniFile::writeBoolean(const std::string& sectionName, const std::string& key, bool bolValue)
 {
     std::string value = bolValue ? "True" : "False";
     section.emplace(key, std::pair<std::string, std::string> (value, sectionName));
     WritePrivateProfileString(sectionName.c_str(),  key.c_str(), value.c_str(), fileName.c_str());
 }
 
-void IniFile::writeString(std::string sectionName, std::string key, std::string value)
+void IniFile::writeString(const std::string& sectionName, const std::string& key, const std::string& value)
 {
     if(value.empty() || key.empty() || sectionName.empty())
-        throw std::logic_error("Invalid argument");
+        throw std::invalid_argument("Invalid argument");
     section.emplace(key, std::pair<std::string, std::string> (value, sectionName));
     WritePrivateProfileString(sectionName.c_str(),  key.c_str(), value.c_str(), fileName.c_str());
 }
 
-int IniFile::readInteger(std::string sectionName, std::string key, int iDefaultValue)
+int IniFile::readInteger(const std::string& sectionName, const std::string& key, int iDefaultValue) const
 {
     char result[255];
     std::string defaultValue = std::to_string(iDefaultValue);
@@ -76,7 +76,7 @@ int IniFile::readInteger(std::string sectionName, std::string key, int iDefaultV
     throw std::invalid_argument("Result doesn't exists anymore");
 }
 
-float IniFile::readFloat(std::string sectionName, std::string key, float fltDefaultValue)
+float IniFile::readFloat(const std::string& sectionName, const std::string& key, float fltDefaultValue) const
 {
     char result[255];
     std::string defaultValue = std::to_string(fltDefaultValue);
@@ -91,7 +91,7 @@ float IniFile::readFloat(std::string sectionName, std::string key, float fltDefa
     throw std::invalid_argument("Result doesn't exists anymore");
 }
 
-std::string IniFile::readBoolean(std::string sectionName, std::string key, bool boolDefaultValue)
+std::string IniFile::readBoolean(const std::string& sectionName, const std::string& key, bool boolDefaultValue) const
 {
     char result[255];
     std::string defaultValue = boolDefaultValue ? "True" : "False";
@@ -104,7 +104,7 @@ std::string IniFile::readBoolean(std::string sectionName, std::string key, bool 
     throw std::invalid_argument("Result doesn't exists anymore");
 }
 
-std::string IniFile::readString(std::string sectionName, std::string key, std::string defaultValue)
+std::string IniFile::readString(const std::string& sectionName, const std::string& key, const std::string& defaultValue) const
 {
     char result[255];
     GetPrivateProfileString(sectionName.c_str(), key.c_str(), defaultValue.c_str(), result, 255, fileName.c_str());
@@ -116,7 +116,7 @@ std::string IniFile::readString(std::string sectionName, std::string key, std::s
     throw std::invalid_argument("Result doesn't exists anymore");
 }
 
-void IniFile::readSection(std::string sectionName)
+void IniFile::readSection(const std::string& sectionName) const
 {
     bool find = false;
     for(auto it = section.cbegin(); it != section.cend(); ++it){
@@ -139,7 +139,7 @@ void IniFile::readSection(std::string sectionName)
             const char* pSubstr = buffer;
             while('\0' != *pSubstr)
             {
-                size_t substrLen = strlen(pSubstr);           //size_t is unsigned int type
+                size_t substrLen = strlen(pSubstr);
                 const char* pos = strchr(pSubstr, '=');
                 if(nullptr != pos)
                 {
@@ -156,8 +156,8 @@ void IniFile::readSection(std::string sectionName)
     }
 }
 
-void IniFile::removeSection(std::string sectionName)     //while struct because erase(key) but section
-{                                                      //is not a key
+void IniFile::removeSection(const std::string& sectionName)     //while structure because erase(key) but section
+{                                                               //is not a key
     bool find = false;
     for(auto it = section.cbegin(); it != section.cend(); ++it){
         if (strcmp(sectionName.c_str(), it->second.second.c_str()) == 0)
@@ -178,7 +178,7 @@ void IniFile::removeSection(std::string sectionName)     //while struct because 
     WritePrivateProfileString(sectionName.c_str(),NULL,NULL,fileName.c_str());
 }
 
-void IniFile::removeKey(std::string sectionName,  std::string key)
+void IniFile::removeKey(const std::string& sectionName,  const std::string& key)
 {
     bool find = false;
     for(auto it = section.cbegin(); it != section.cend(); ++it){
@@ -192,7 +192,9 @@ void IniFile::removeKey(std::string sectionName,  std::string key)
     WritePrivateProfileString(sectionName.c_str(),key.c_str(),NULL,fileName.c_str());
 }
 
-void IniFile::printMapElements() {
+void IniFile::printMapElements() const
+{
+    std::cout<<"\nI valori della mappa sono:"<<std::endl;
     for(auto it = section.cbegin(); it != section.cend(); ++it)
     {
         std::cout << "((" << it->first << ", " << it->second.first << "), " << it->second.second << ");" <<std::endl;

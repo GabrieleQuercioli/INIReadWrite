@@ -14,8 +14,10 @@ int main()
         iniFile->writeFloat("boot loader", "RunExec", 15.82);
         iniFile->writeBoolean("operating system", "NoExec", false);
         iniFile->writeString("operating system", "OS", "Windows XP Home Edition");
-    } catch (std::logic_error &e) {
+    } catch (std::invalid_argument &e) {
         std::cout<<e.what()<<std::endl;
+    } catch (std::logic_error &e) {
+        std::cout<<"Il valore della stringa non puo essere nullo"<<std::endl;
     }
 
     try {
@@ -23,6 +25,8 @@ int main()
         //iniFile->removeSection("operating system");
     } catch (std::invalid_argument &e) {
         std::cout<<e.what()<<std::endl;
+    } catch (std::logic_error &e) {
+        std::cout<<"Il valore della stringa non puo essere nullo"<<std::endl;
     }
 
 
@@ -31,7 +35,10 @@ int main()
         iniFile->readSection("boot loader");
     } catch (std::invalid_argument &e) {
         std::cout<<e.what()<<std::endl;
+    } catch (std::logic_error &e) {
+        std::cout<<"Il valore della stringa non puo essere nullo"<<std::endl;
     }
+
     try{
         std::string szDefault = iniFile->readString("boot loader", "Default", "Def");
         int iTimeout = iniFile->readInteger("boot loader", "Timeout", 10);
@@ -47,6 +54,8 @@ int main()
                 <<"Operating System: "<<szOS<<std::endl;
     }catch (std::invalid_argument &e){
         std::cout<<e.what()<<std::endl;
+    }catch (std::logic_error &e) {
+        std::cout<<"Il valore della stringa non puo essere nullo"<<std::endl;
     }
 
 

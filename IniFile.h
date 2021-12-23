@@ -12,26 +12,26 @@ class IniFile
 {
 public:
     IniFile();
-    explicit IniFile(std::string fileName);
-    void setIniFileName(std::string name);
+    explicit IniFile(const std::string& fileName);
+    void setIniFileName(const std::string& name);
     std::string getIniFileName();
-    void writeInteger(std::string sectionName, std::string key, int iValue);
-    void writeFloat(std::string sectionName, std::string key, float fltValue);
-    void writeBoolean(std::string sectionName, std::string key, bool bolValue);
-    void writeString(std::string sectionName, std::string key, std::string value);
-    int readInteger(std::string sectionName, std::string key, int iDefaultValue);
-    float readFloat(std::string sectionName, std::string key, float fltDefaultValue);
-    std::string readBoolean(std::string sectionName, std::string key, bool bolDefaultValue);
-    std::string readString(std::string sectionName, std::string key, std::string defaultValue);
-    void readSection(std::string sectionName);
-    void removeSection(std::string sectionName);
-    void removeKey(std::string sectionName, std::string key);
-    void printMapElements();
+    void writeInteger(const std::string& sectionName, const std::string& key, int iValue);
+    void writeFloat(const std::string& sectionName, const std::string& key, float fltValue);
+    void writeBoolean(const std::string& sectionName, const std::string& key, bool bolValue);
+    void writeString(const std::string& sectionName, const std::string& key, const std::string& value);
+    int readInteger(const std::string& sectionName, const std::string& key, int iDefaultValue) const;
+    float readFloat(const std::string& sectionName, const std::string& key, float fltDefaultValue) const;
+    std::string readBoolean(const std::string& sectionName, const std::string& key, bool bolDefaultValue) const;
+    std::string readString(const std::string& sectionName, const std::string& key, const std::string& defaultValue) const;
+    void readSection(const std::string& sectionName) const;
+    void removeSection(const std::string& sectionName);
+    void removeKey(const std::string& sectionName, const std::string& key);
+    void printMapElements() const;
 
 private:
     std::string fileName;
     std::map<std::string, std::pair<std::string, std::string>> section;
-    //key=key and value=pair(szValue,sectionName)
+    //In map: key=key and value=pair(Value,sectionName)
 };
 
 #endif //INIFILE_H
